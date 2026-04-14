@@ -1,0 +1,83 @@
+# ═══════════════════════════════════════════════
+#  Flash Sale Application Configuration
+# ═══════════════════════════════════════════════
+
+spring:
+  application:
+    name: flash-sale-service
+
+  # ─── Database (PostgreSQL) ───
+  datasource:
+    url: jdbc:postgresql://localhost:5432/flash_sale_db
+    username: flash_sale_user
+    password: ${DB_PASSWORD:changeme}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 20         # Max DB connections
+      minimum-idle: 5
+      connection-timeout: 5000      # 5s max wait for connection
+      idle-timeout: 300000          # 5 min idle before eviction
+      max-lifetime: 600000          # 10 min max connection lifetime
+
+  # ─── JPA / Hibernate ───
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+        # Enable batch inserts for performance
+        jdbc.batch_size: 20
+        order_inserts: true
+        order_updates: true
+
+  # ─── Redis ───
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      password: ${REDIS_PASSWORD:}
+      timeout: 3000
+      lettuce:
+        pool:
+          max-active: 16
+          max-idle: 8
+          min-idle: 4
+
+  # ─── Active Profile ───
+  # Select ONE concurrency strategy:
+  #   optimistic-lock    → @Version-based CAS retry
+  #   pessimistic-lock   → SELECT FOR UPDATE (DB row lock)
+  #   distributed-lock   → Redis Redlock + DECR (recommended)
+  profiles:
+    active: optimistic-lock
+
+# ─── Server ───
+server:
+  port: 8080
+
+# ─── Logging ───
+logging:
+  level:
+    com.flashsale: DEBUG
+    org.hibernate.SQL: WARN
+    org.springframework.transaction: DEBUG
+
+# ─── Resilience4j ───
+resilience4j:
+  ratelimiter:
+    instances:
+      purchase:
+        limitForPeriod: 5
+        limitRefreshPeriod: 1s
+        timeoutDuration: 500ms
+  circuitbreaker:
+    instances:
+      paymentService:
+        slidingWindowType: COUNT_BASED
+        slidingWindowSize: 20
+        failureRateThreshold: 50
+        waitDurationInOpenState: 30s
+        permittedNumberOfCallsInHalfOpenState: 5
