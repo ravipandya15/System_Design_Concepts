@@ -1,0 +1,13 @@
+<mxfile host="65bd71144e">
+    <diagram id="Circuit-Breaker" name="Circuit Breaker State">
+        <mxGraphModel dx="1000" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="2" value="MERMAID CODE (Copy this):&#10;&#10;stateDiagram-v2&#10;    [*] --&gt; Closed&#10;    Closed --&gt; Open: Failure threshold exceeded&lt;br/&gt;(e.g. 50% of 20 calls)&#10;    Open --&gt; HalfOpen: Wait timeout&lt;br/&gt;(e.g. 30 seconds)&#10;    HalfOpen --&gt; Closed: Probe succeeds&#10;    HalfOpen --&gt; Open: Probe fails" style="text;whiteSpace=wrap;html=1;fontSize=12;fontFamily=Courier New;" vertex="1" parent="1">
+                    <mxGeometry x="50" y="50" width="700" height="300" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

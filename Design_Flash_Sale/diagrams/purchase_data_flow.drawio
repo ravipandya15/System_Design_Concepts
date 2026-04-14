@@ -1,0 +1,13 @@
+<mxfile host="65bd71144e">
+    <diagram id="Purchase-Flow" name="Purchase Data Flow">
+        <mxGraphModel dx="1000" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="2" value="MERMAID CODE (Copy this):&#10;&#10;sequenceDiagram&#10;    actor User&#10;    participant GW as API Gateway&#10;    participant RL as Rate Limiter&#10;    participant FS as Flash Sale Svc&#10;    participant REDIS as Redis&#10;    participant INV as Inventory Svc&#10;    participant DB as PostgreSQL&#10;    participant ORD as Order Svc&#10;    participant KAFKA as Kafka&#10;    participant PAY as Payment Svc&#10;    participant NOTIF as Notification Svc&#10;&#10;    User-&gt;&gt;GW: POST /api/v1/flash-sales/{id}/purchase&#10;    GW-&gt;&gt;RL: Check rate limit&#10;    RL--&gt;&gt;GW: Allowed&#10;&#10;    GW-&gt;&gt;FS: Validate sale is active&#10;    FS-&gt;&gt;REDIS: GET flash_sale:{id}&#10;    REDIS--&gt;&gt;FS: Sale data (status=ACTIVE)&#10;    FS--&gt;&gt;GW: Sale is valid&#10;&#10;    GW-&gt;&gt;INV: Reserve inventory&#10;    INV-&gt;&gt;REDIS: DECR flash_sale:{id}:stock&#10;    alt Stock &gt; 0&#10;        REDIS--&gt;&gt;INV: Remaining stock (e.g. 42)&#10;        INV-&gt;&gt;DB: UPDATE inventory SET quantity=quantity-1, version=version+1 WHERE version=current_version&#10;        DB--&gt;&gt;INV: 1 row updated&#10;        INV--&gt;&gt;GW: Reserved (reservation_id)&#10;    else Stock &lt;= 0&#10;        REDIS--&gt;&gt;INV: -1 (depleted)&#10;        INV-&gt;&gt;REDIS: INCR flash_sale:{id}:stock&#10;        INV--&gt;&gt;GW: SOLD OUT (HTTP 409)&#10;    end&#10;&#10;    GW-&gt;&gt;ORD: Create order&#10;    ORD-&gt;&gt;DB: INSERT order (status=PAYMENT_PENDING)&#10;    ORD--&gt;&gt;GW: order_id&#10;&#10;    GW-&gt;&gt;PAY: Process payment&#10;    PAY-&gt;&gt;DB: INSERT payment record&#10;    PAY--&gt;&gt;GW: payment_confirmed&#10;&#10;    GW-&gt;&gt;ORD: Confirm order&#10;    ORD-&gt;&gt;DB: UPDATE order SET status=CONFIRMED&#10;    ORD-&gt;&gt;KAFKA: Publish OrderConfirmed event&#10;&#10;    KAFKA-&gt;&gt;NOTIF: OrderConfirmed event&#10;    NOTIF-&gt;&gt;User: Email/Push confirmation&#10;&#10;    GW--&gt;&gt;User: 200 OK {order_id, status}" style="text;whiteSpace=wrap;html=1;fontSize=12;fontFamily=Courier New;" vertex="1" parent="1">
+                    <mxGeometry x="50" y="50" width="700" height="800" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

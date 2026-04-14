@@ -1,0 +1,13 @@
+<mxfile host="65bd71144e">
+    <diagram id="Scalability" name="Scalability Design">
+        <mxGraphModel dx="1000" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="2" value="MERMAID CODE (Copy this):&#10;&#10;graph LR&#10;    subgraph &quot;Horizontal Scaling&quot;&#10;        A1[&quot;Flash Sale Svc ×N&quot;]&#10;        A2[&quot;Inventory Svc ×N&quot;]&#10;        A3[&quot;Order Svc ×N&quot;]&#10;        A4[&quot;Payment Svc ×N&quot;]&#10;    end&#10;&#10;    subgraph &quot;Data Scaling&quot;&#10;        R1[&quot;Redis Cluster&lt;br/&gt;6 nodes (3 master + 3 replica)&quot;]&#10;        P1[&quot;PostgreSQL&lt;br/&gt;1 Master + 2 Read Replicas&quot;]&#10;        K1[&quot;Kafka Cluster&lt;br/&gt;3 brokers, 12 partitions&quot;]&#10;    end&#10;&#10;    A1 &amp; A2 --&gt; R1&#10;    A2 &amp; A3 &amp; A4 --&gt; P1&#10;    A3 --&gt; K1" style="text;whiteSpace=wrap;html=1;fontSize=12;fontFamily=Courier New;" vertex="1" parent="1">
+                    <mxGeometry x="50" y="50" width="700" height="400" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

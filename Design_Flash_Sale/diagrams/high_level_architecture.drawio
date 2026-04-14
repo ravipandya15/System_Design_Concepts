@@ -1,0 +1,171 @@
+<mxfile host="65bd71144e">
+    <diagram id="HL-Architecture-Enterprise" name="Enterprise High Level Architecture">
+        <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1200" pageHeight="1000" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                
+                <!-- Client Layer -->
+                <mxCell id="ClientLayer" value="Client Layer" style="swimlane;whiteSpace=wrap;html=1;fontColor=#000000;startSize=20;fillColor=#f5f5f5;fontStyle=1" vertex="1" parent="1">
+                    <mxGeometry x="360" y="20" width="130" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="User" value="User / Browser / App" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;fontColor=#000000;" vertex="1" parent="ClientLayer">
+                    <mxGeometry x="50" y="30" width="30" height="40" as="geometry"/>
+                </mxCell>
+
+                <!-- Edge / CDN Layer -->
+                <mxCell id="EdgeLayer" value="Edge / CDN Layer (Cloudflare / AWS CloudFront)" style="swimlane;whiteSpace=wrap;html=1;fontColor=#000000;startSize=20;fillColor=#ffe6cc;fontStyle=1;strokeColor=#d79b00;" vertex="1" parent="1">
+                    <mxGeometry x="45" y="160" width="760" height="120" as="geometry"/>
+                </mxCell>
+                <mxCell id="WAF" value="WAF &amp; Bot Protection" style="rounded=1;whiteSpace=wrap;html=1;fontColor=#000000;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="EdgeLayer">
+                    <mxGeometry x="20" y="50" width="160" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="EDGE_RL" value="Edge Rate Limiter" style="rounded=1;whiteSpace=wrap;html=1;fontColor=#000000;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="EdgeLayer">
+                    <mxGeometry x="220" y="50" width="160" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="VWR" value="Virtual Waiting Room&lt;br&gt;(Token Issuer)" style="rounded=1;whiteSpace=wrap;html=1;fontColor=#000000;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="EdgeLayer">
+                    <mxGeometry x="420" y="50" width="160" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="Queue" value="Visual Queueing Page" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;fontColor=#000000;darkOpacity=0.05;fillColor=#f8cecc;strokeColor=#b85450;size=15;" vertex="1" parent="EdgeLayer">
+                    <mxGeometry x="610" y="40" width="130" height="50" as="geometry"/>
+                </mxCell>
+
+                <!-- API Gateway -->
+                <mxCell id="GWLayer" value="API Gateway" style="swimlane;whiteSpace=wrap;html=1;fontColor=#000000;startSize=20;fillColor=#f5f5f5;fontStyle=1" vertex="1" parent="1">
+                    <mxGeometry x="325" y="320" width="200" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="GW" value="API Gateway&lt;br&gt;(Kong / Spring Cloud)" style="rounded=1;whiteSpace=wrap;html=1;fontColor=#000000;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="GWLayer">
+                    <mxGeometry x="20" y="30" width="160" height="40" as="geometry"/>
+                </mxCell>
+
+                <!-- Application Services -->
+                <mxCell id="AppLayer" value="Application Services" style="swimlane;whiteSpace=wrap;html=1;fontColor=#000000;startSize=20;fillColor=#f5f5f5;fontStyle=1" vertex="1" parent="1">
+                    <mxGeometry x="45" y="440" width="760" height="150" as="geometry"/>
+                </mxCell>
+                <mxCell id="Auth" value="Auth Service" style="rounded=1;whiteSpace=wrap;html=1;fontColor=#000000;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="AppLayer">
+                    <mxGeometry x="20" y="40" width="150" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="FS" value="Flash Sale Service&lt;br&gt;(L1 Caffeine Cache)" style="rounded=1;whiteSpace=wrap;html=1;fontColor=#000000;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="AppLayer">
+                    <mxGeometry x="220" y="40" width="150" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="INV" value="Inventory Engine" style="rounded=1;whiteSpace=wrap;html=1;fontColor=#000000;fillColor=#ffe6cc;strokeColor=#d79b00;fontStyle=1" vertex="1" parent="AppLayer">
+                    <mxGeometry x="420" y="40" width="150" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="ORD" value="Order Service" style="rounded=1;whiteSpace=wrap;html=1;fontColor=#000000;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="AppLayer">
+                    <mxGeometry x="120" y="90" width="150" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="PAY" value="Payment Service" style="rounded=1;whiteSpace=wrap;html=1;fontColor=#000000;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="AppLayer">
+                    <mxGeometry x="320" y="90" width="150" height="40" as="geometry"/>
+                </mxCell>
+
+                <!-- Data & Event Layer -->
+                <mxCell id="DataLayer" value="Data &amp; Event Layer" style="swimlane;whiteSpace=wrap;html=1;fontColor=#000000;startSize=20;fillColor=#f5f5f5;fontStyle=1" vertex="1" parent="1">
+                    <mxGeometry x="65" y="640" width="720" height="240" as="geometry"/>
+                </mxCell>
+                <mxCell id="Redis" value="Redis Cluster (Sharded Inventory)" style="shape=cylinder3;whiteSpace=wrap;html=1;fontColor=#000000;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="DataLayer">
+                    <mxGeometry x="60" y="40" width="140" height="80" as="geometry"/>
+                </mxCell>
+                
+                <mxCell id="Kafka" value="Kafka Event Bus&lt;br&gt;(Partitioned by Sale)" style="shape=cube;whiteSpace=wrap;html=1;fontColor=#000000;boundedLbl=1;backgroundOutline=1;darkOpacity=0.05;darkOpacity2=0.1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="DataLayer">
+                    <mxGeometry x="300" y="40" width="140" height="80" as="geometry"/>
+                </mxCell>
+                
+                <mxCell id="DB_NO" value="DynamoDB / Cassandra&lt;br&gt;(High-Write Order Intake)" style="shape=cylinder3;whiteSpace=wrap;html=1;fontColor=#000000;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="DataLayer">
+                    <mxGeometry x="60" y="150" width="140" height="80" as="geometry"/>
+                </mxCell>
+                
+                <mxCell id="DB_SQL" value="PostgreSQL (Partitioned)&lt;br&gt;(Financial Truth)" style="shape=cylinder3;whiteSpace=wrap;html=1;fontColor=#000000;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="DataLayer">
+                    <mxGeometry x="300" y="150" width="140" height="80" as="geometry"/>
+                </mxCell>
+
+
+                <!-- Edges -->
+                <mxCell id="e1" edge="1" parent="1" source="User" target="WAF">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e2" edge="1" parent="1" source="WAF" target="EDGE_RL">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e3" edge="1" parent="1" source="EDGE_RL" target="VWR">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                
+                <mxCell id="e4" edge="1" parent="1" source="VWR" target="GW" value="Valid Token">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e5" edge="1" parent="1" source="VWR" target="Queue" value="No Token">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+
+                <!-- Application edges -->
+                <mxCell id="e6" edge="1" parent="1" source="GW" target="Auth">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e7" edge="1" parent="1" source="GW" target="FS">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e8" edge="1" parent="1" source="GW" target="INV">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e9" edge="1" parent="1" source="GW" target="ORD">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="425" y="420" />
+                            <mxPoint x="240" y="420" />
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+
+                <!-- Data Edges -->
+                <mxCell id="e11" edge="1" parent="1" source="FS" target="Redis">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="340" y="610" />
+                            <mxPoint x="195" y="610" />
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="e13" edge="1" parent="1" source="INV" target="Redis">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="540" y="630" />
+                            <mxPoint x="195" y="630" />
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="e14" edge="1" parent="1" source="INV" target="Kafka" value="InventoryReserved Event">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="540" y="650" />
+                            <mxPoint x="435" y="650" />
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                
+                <mxCell id="e15" edge="1" parent="1" source="Kafka" target="ORD">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e16" edge="1" parent="1" source="ORD" target="DB_NO">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e17" edge="1" parent="1" source="ORD" target="Kafka" value="OrderCreated Event">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="240" y="700" as="sourcePoint"/>
+                        <Array as="points">
+                            <mxPoint x="240" y="740" />
+                            <mxPoint x="280" y="740" />
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                
+                <mxCell id="e18" edge="1" parent="1" source="Kafka" target="PAY">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e19" edge="1" parent="1" source="PAY" target="DB_SQL">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>
